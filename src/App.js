@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person.js'
-    
+import Radium,{ StyleRoot } from 'radium';
 
 
 class App extends Component{
@@ -54,11 +54,16 @@ class App extends Component{
 
   render(){
     const style={
-        backgroundColor:'white',
+        backgroundColor:'green',
+        color:"white",
         font:'inherit',
         border:'1px solid blue',
         padding:'8px',
-        cursor:'pointer'
+        cursor:'pointer',
+        ':hover':{
+          backgroundColor:'lightgreen',
+          color:'black'
+        }
     };
     
     let persons=null;
@@ -75,21 +80,37 @@ class App extends Component{
                 changed={(event)=>this.nameChangeHandler(event,person.id)} />
              })}
         </div>)
+
+        style.backgroundColor='red';
+        style[':hover']={
+          backgroundColor:'salmon',
+          color:'black'
+        }
     }
 
+    let classes=[]
+    if(this.state.persons.length<=2){
+      classes.push('red')
+    }
+    if(this.state.persons.length<=1){
+      classes.push('bold')
+    }
     return (
-      <div className="App">
-       <h1>Hi,i am a react app</h1>
-       <button
-            style={style} 
-            onClick={this.togglePersonsHandler}>Toggle Person</button>
-        {persons}
-      </div>
+      <StyleRoot>
+        <div className="App">
+        <h1>Hi,i am a react app</h1>
+        <p className={classes.join(' ')}>This is really working</p>
+        <button
+              style={style} 
+              onClick={this.togglePersonsHandler}>Toggle Person</button>
+          {persons}
+        </div>
+      </StyleRoot>
     );
     }
 }
 
-export default App;
+export default Radium(App);
 /*
 How do pass argument to an change handler or to a function which is passed as reference to the child component?
 Ans: we have to use bind.We have passed Max as an argument(preferred method)
@@ -133,5 +154,18 @@ OUTPUTING OF LIST DYNAMICALLY
 Inside the map function in the person tag we have added this as an attr:-
   changed={(event)=>this.nameChangeHandler(event,person.id)} />
 What does this mean is that when in the child element the input text box is changed then ()=> will be called first and method that is called first on a event recieves an event argument and as a result we have specified arrow function to recieved the event argument and then it has passed this event argument to the nameChangedHandler Along with the id of the person element of the list
+
+Limitations of inline styles:
+  1.We cannot use pesudo selectors like hover.If we create seprate css file for these pesudo selectors like button:hover.Then the css will apply to all the buttons not the button we want it to apply to.
+  2.We cannot use media quries.
+
+We have to install radium a React package that allows us to use pesudo selectors and media quries in inline way.
+export default Radium(App); <-- Radium here is a higher order component.It is a component wraping App component injecting some extra functionality.
+  ':hover':{
+          backgroundColor:'lightgreen',
+          color:'black'
+        }This is how we add a pesudo selector to a inline style. 
+
+Please note that wrapping the export with radium is enough for pesudo selectors but for transforming selectors like media queries or keyframe animation you need to wrap the application in special component provided by radium called  StyleRoot.We have done this in App.js
  */
 

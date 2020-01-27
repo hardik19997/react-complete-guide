@@ -1,9 +1,16 @@
 import React from 'react'
 import './Person.css'
+import Radium from 'radium';
 
 const person=(props)=>{
+const style={
+    '@media(min-width:500px)':{
+        with:'450px'
+    }
+}
+
 return(
-    <div className="Person">
+    <div className="Person"style={style}>
         <p onClick={props.click}>I am {props.name} and I am {props.age} years old</p>
         <p>{props.children}</p>
         {/* we have a 2 way binding changes are propaged upto parent component which changes state
@@ -13,7 +20,7 @@ return(
 ) 
 };
 
-export default person;
+export default Radium(person);
 /*
 Note:-
      for the funtional component the function name can be lower case.File name should have upper case first character
@@ -36,4 +43,10 @@ When you need to use a method of the parent element you can PASS THE METHOD AS R
 2 WAY BINDING 
 always always when you have you have to set the value of a input field you can use value=some_code but in addition to this you should always provide a onChange handler for that input tag otherwise you will be struck with the value forever
 Webpack is our bundler will not pack the css with this js file rather it will pack it with the index.html file
+const style={
+    '@media(min-width:500px)':{
+        with:'450px'
+    } With the use of radium we have added a media query.Doubts what it does?
+
+Please note that wrapping the export with radium is enough for pesudo selectors but for transforming selectors like media queries or keyframe animation you need to wrap the application in special component provided by radium called  StyleRoot.We have done this in App.js
 */
