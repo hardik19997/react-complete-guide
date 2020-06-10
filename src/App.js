@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person.js'
 import Radium,{ StyleRoot } from 'radium';
-
+Hardik
 
 class App extends Component{
   /*state is internal word */
@@ -54,7 +54,7 @@ class App extends Component{
 
   render(){
     const style={
-        backgroundColor:'green',
+        backgroundColor:'red',
         color:"white",
         font:'inherit',
         border:'1px solid blue',
